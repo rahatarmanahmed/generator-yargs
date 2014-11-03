@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 var argv = require('yargs')
 	.alias('s', 'safe')
 	.argv;

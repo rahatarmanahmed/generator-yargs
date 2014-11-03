@@ -72,18 +72,19 @@ var YargsGenerator = yeoman.generators.Base.extend({
   writing: {
     app: function () {
       this.template('_package.json', 'package.json');
-      this.src.copy('_.gitignore', '.gitignore');
-      this.src.copy('_.npmignore', '.npmignore');
+      this.template('_.gitignore', '.gitignore');
+      this.template('_.npmignore', '.npmignore');
+      this.dest.mkdir('bin');
+      this.template('bin/_index.js', 'bin/index.js');
       this.dest.mkdir('src');
-
       if(this.useCoffee)
       {
         this.src.copy('Gruntfile.coffee', 'Gruntfile.coffee')
-        this.src.copy('src/index.coffee', 'src/index.coffee');
+        this.src.copy('src/index.coffee', 'src/'+this.commandName+'.coffee');
       }
       else
       {
-        this.src.copy('src/index.js', 'src/index.js');
+        this.src.copy('src/index.js', 'src/'+this.commandName+'.js');
       }
     },
 
