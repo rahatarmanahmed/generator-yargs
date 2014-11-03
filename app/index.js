@@ -25,6 +25,8 @@ var YargsGenerator = yeoman.generators.Base.extend({
 
     this.useCoffee = !!this.options['coffee'];
 
+
+
     // Have Yeoman greet the user.
     this.log(yosay(
       'Welcome to the great Yargs command generator!'
@@ -41,7 +43,7 @@ var YargsGenerator = yeoman.generators.Base.extend({
         type: 'input',
         name: 'commandName',
         message: 'What should your command be called?',
-        default: "rm-rf-slash"
+        default: path.basename(process.cwd())
       },
       {
         type: 'input',
