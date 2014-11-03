@@ -70,8 +70,8 @@ var YargsGenerator = yeoman.generators.Base.extend({
   writing: {
     app: function () {
       this.template('_package.json', 'package.json');
-      this.src.copy('.gitignore', '.gitignore');
-      this.src.copy('.npmignore', '.npmignore');
+      this.src.copy('_.gitignore', '.gitignore');
+      this.src.copy('_.npmignore', '.npmignore');
       this.dest.mkdir('src');
 
       if(this.useCoffee)
