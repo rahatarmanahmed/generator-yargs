@@ -41,6 +41,10 @@ This generator will generate a simple CoffeeScript project with a simple Gruntfi
 
 To build your coffee files, run `grunt build` or just `grunt`.
 
+### Usage
+
+You can use `npm link` to create a global reference to your project, allowing you to call your script by the command you specified in the wizard.
+
 ### Getting To Know Yeoman
 
 Yeoman has a heart of gold. He's a person with feelings and opinions, but he's very easy to work with. If you think he's too opinionated, he can be easily convinced.
