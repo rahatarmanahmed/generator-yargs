@@ -74,6 +74,7 @@ var YargsGenerator = yeoman.generators.Base.extend({
       this.template('_package.json', 'package.json');
       this.template('_.gitignore', '.gitignore');
       this.template('_.npmignore', '.npmignore');
+      this.template('_README.md', 'README.md');
       this.dest.mkdir('bin');
       this.template('bin/_index.js', 'bin/index.js');
       this.dest.mkdir('src');
