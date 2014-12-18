@@ -1,16 +1,19 @@
 'use strict';
 var util = require('util');
+var fs = require('fs');
 var path = require('path');
 var yeoman = require('yeoman-generator');
 var yosay = require('yosay');
+
+var defaultBaseName = path.basename(process.cwd())
 
 var YargsGenerator = yeoman.generators.Base.extend({
 
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
-    this.option("coffee", {
-      desc: "Generate a project for CoffeeScript",
-      type: "boolean",
+    this.option('coffee', {
+      desc: 'Generate a project for CoffeeScript',
+      type: 'boolean',
       default: false
     });
   },
@@ -37,7 +40,7 @@ var YargsGenerator = yeoman.generators.Base.extend({
         type: 'input',
         name: 'author',
         message: 'Who is the author?',
-        default: "Linus Torvalds"
+        default: 'Linus Torvalds'
       },
       {
         type: 'input',
@@ -49,7 +52,7 @@ var YargsGenerator = yeoman.generators.Base.extend({
         type: 'input',
         name: 'description',
         message: 'Describe what your command does.',
-        default: "Formats your hard drive."
+        default: 'Formats your hard drive.'
       }
     ];
 
@@ -57,7 +60,7 @@ var YargsGenerator = yeoman.generators.Base.extend({
       prompts.push({
         type: 'confirm',
         name: 'useCoffee',
-        message: "Would you like to use CoffeeScript?",
+        message: 'Would you like to use CoffeeScript?',
         default: false
       })
 
@@ -65,33 +68,38 @@ var YargsGenerator = yeoman.generators.Base.extend({
       for(var key in props){
         this[key] = props[key];
       }
+      this.pathPrefix = this.commandName+'/';
+      if(this.commandName == defaultBaseName && fs.readdirSync('.').length == 0)
+        this.pathPrefix = './'
       done();
     }.bind(this));
   },
 
   writing: {
     app: function () {
-      this.template('_package.json', 'package.json');
-      this.template('_.gitignore', '.gitignore');
-      this.template('_.npmignore', '.npmignore');
-      this.template('_README.md', 'README.md');
-      this.dest.mkdir('bin');
-      this.template('bin/_index.js', 'bin/index.js');
-      this.dest.mkdir('src');
+      this.template('_package.json', this.pathPrefix+'package.json');
+      this.template('_.gitignore', this.pathPrefix+'.gitignore');
+      this.template('_.npmignore', this.pathPrefix+'.npmignore');
+      this.template('_README.md', this.pathPrefix+'README.md');
+      this.dest.mkdir(this.pathPrefix+'bin');
+      this.template('bin/_index.js', this.pathPrefix+'bin/index.js');
+      this.dest.mkdir(this.pathPrefix+'src');
       if(this.useCoffee)
       {
-        this.src.copy('Gruntfile.coffee', 'Gruntfile.coffee')
-        this.src.copy('src/index.coffee', 'src/'+this.commandName+'.coffee');
+        this.src.copy('Gruntfile.coffee', this.pathPrefix+'Gruntfile.coffee')
+        this.src.copy('src/index.coffee', this.pathPrefix+'src/'+this.commandName+'.coffee');
       }
       else
       {
-        this.src.copy('src/index.js', 'src/'+this.commandName+'.js');
+        this.src.copy('src/index.js', this.pathPrefix+'src/'+this.commandName+'.js');
       }
     },
 
   },
 
   end: function () {
+    var npmdir = process.cwd() + '/' + this.pathPrefix;
+    process.chdir(npmdir);
     this.installDependencies();
   }
 });
