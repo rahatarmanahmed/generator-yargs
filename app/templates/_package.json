@@ -10,9 +10,10 @@
   },
   "dependencies": {
   	"yargs": "1.3.2"
-  },
+  }<% if(useCoffee) { %>,
   "devDependencies": {
 	"grunt": "*",
 	"grunt-contrib-coffee": "*"
   }
+  <% } %>
 }
