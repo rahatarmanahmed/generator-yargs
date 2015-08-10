@@ -14,8 +14,8 @@ To install from npm, run
 
  - `args...`: a list of arguments
  
-<% if(useCoffee) { %>
+<% if(lang !== 'JavaScript') { %>
 ## Building
 
-To compile the source just run `grunt`.
+To compile the source just run `npm run build`.
 <% } %>

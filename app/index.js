@@ -15,12 +15,22 @@ var YargsGenerator = yeoman.generators.Base.extend({
       type: 'boolean',
       default: false
     });
+    this.option('es6', {
+      desc: 'Generate a project with ES6 (Babel)',
+      type: 'boolean',
+      default: false
+    });
   },
 
   prompting: function () {
     var done = this.async();
 
-    this.useCoffee = this.options['coffee'];
+    if(this.options['coffee']) {
+      this.lang = 'CoffeeScript'
+    }
+    if(this.options['es6']) {
+      this.lang = 'ES6'
+    }
 
     var prompts = [
       {
@@ -43,12 +53,17 @@ var YargsGenerator = yeoman.generators.Base.extend({
       }
     ];
 
-    if(!this.useCoffee)
+    if(!(this.options['coffee'] || this.options['es6']))
       prompts.push({
-        type: 'confirm',
-        name: 'useCoffee',
-        message: 'Would you like to use CoffeeScript?',
-        default: false
+        type: 'list',
+        name: 'lang',
+        message: 'Would you like to use JavaScript, ES6 (Babel), or CoffeeScript?',
+        choices: [
+          'JavaScript',
+          'ES6',
+          'CoffeeScript'
+        ],
+        default: 'JavaScript'
       })
 
     this.prompt(prompts, function (props) {
@@ -76,11 +91,6 @@ var YargsGenerator = yeoman.generators.Base.extend({
         this
       );
       this.fs.copyTpl(
-        this.templatePath('_.npmignore'),
-        this.destinationPath('.npmignore'),
-        this
-      );
-      this.fs.copyTpl(
         this.templatePath('_README.md'),
         this.destinationPath('README.md'),
         this
@@ -90,10 +100,26 @@ var YargsGenerator = yeoman.generators.Base.extend({
         this.destinationPath('bin/index.js'),
         this
       );
-      if(this.useCoffee) {
+      if(this.lang === 'CoffeeScript') {
         this.fs.copy(
           this.templatePath('src/index.coffee'),
           this.destinationPath('src/'+this.commandName+'.coffee')
+        );
+        this.fs.copyTpl(
+          this.templatePath('_.npmignore'),
+          this.destinationPath('.npmignore'),
+          this
+        );
+      }
+      else if(this.lang === 'ES6') {
+        this.fs.copy(
+          this.templatePath('src/index.es6'),
+          this.destinationPath('src/'+this.commandName+'.js')
+        );
+        this.fs.copyTpl(
+          this.templatePath('_.npmignore'),
+          this.destinationPath('.npmignore'),
+          this
         );
       }
       else {

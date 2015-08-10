@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-<%= useCoffee ? "require('../lib/"+commandName+"');" : "require('../src/"+commandName+"');" %>
+<%= lang !== 'JavaScript' ? "require('../lib/"+commandName+"');" : "require('../src/"+commandName+"');" %>
