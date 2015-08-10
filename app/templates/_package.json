@@ -6,14 +6,20 @@
   "author": "<%= author %>",
   "preferGlobal": "true",
   "bin": {
-  	"<%= commandName %>": "./bin/index.js"
+    "<%= commandName %>": "./bin/index.js"
   },
   "dependencies": {
-  	"yargs": "1.3.2"
+    "yargs": "1.3.2"
   }<% if(useCoffee) { %>,
   "devDependencies": {
-	"grunt": "*",
-	"grunt-contrib-coffee": "*"
+    "coffee-script": "*",
+    "rimraf": "*"
+  },
+  "scripts": {
+    "clean": "rimraf lib",
+    "prepublish": "npm run build",
+    "prebuild": "npm run clean",
+    "build": "coffee -co lib src/**.coffee"
   }
   <% } %>
 }

@@ -1,6 +1,6 @@
-# generator-yargs [![Build Status](https://secure.travis-ci.org/rahatarmanahmed/generator-yargs.png?branch=master)](https://travis-ci.org/rahatarmanahmed/generator-yargs)
+# generator-not-yargs [![Build Status](https://secure.travis-ci.org/rahatarmanahmed/generator-not-yargs.png?branch=master)](https://travis-ci.org/rahatarmanahmed/generator-not-yargs)
 
-A [Yeoman](http://yeoman.io) generator that generates a simple scaffold for node scripts meant to be used as global commands. Supports CoffeeScript, too!
+> [Yeoman](http://yeoman.io) generator
 
 
 ## Getting Started
@@ -35,11 +35,13 @@ Finally, initiate the generator:
 yo yargs
 ```
 
-### CoffeeScript
+If you wish to use coffeescript:
 
-This generator will generate a simple CoffeeScript project with a simple Gruntfile to compile with. Either initiate the generator with `yo yargs --coffee` or just answer the question in the generator wizard.
+```bash
+yo yargs --coffee
+```
 
-To build your coffee files, run `grunt build` or just `grunt`.
+To build your coffee files, run `npm run build`.
 
 ### Usage
 

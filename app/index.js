@@ -3,7 +3,6 @@ var util = require('util');
 var fs = require('fs');
 var path = require('path');
 var yeoman = require('yeoman-generator');
-var yosay = require('yosay');
 
 var defaultBaseName = path.basename(process.cwd())
 
@@ -12,28 +11,16 @@ var YargsGenerator = yeoman.generators.Base.extend({
   constructor: function() {
     yeoman.generators.Base.apply(this, arguments);
     this.option('coffee', {
-      desc: 'Generate a project for CoffeeScript',
+      desc: 'Generate a project with CoffeeScript',
       type: 'boolean',
       default: false
     });
   },
 
-  initializing: function () {
-    this.pkg = require('../package.json');
-    
-  },
-
   prompting: function () {
     var done = this.async();
 
-    this.useCoffee = !!this.options['coffee'];
-
-
-
-    // Have Yeoman greet the user.
-    this.log(yosay(
-      'Welcome to the great Yargs command generator!'
-    ));
+    this.useCoffee = this.options['coffee'];
 
     var prompts = [
       {
@@ -71,35 +58,55 @@ var YargsGenerator = yeoman.generators.Base.extend({
       this.pathPrefix = this.commandName+'/';
       if(this.commandName == defaultBaseName && fs.readdirSync('.').length == 0)
         this.pathPrefix = './'
+      this.destinationRoot(this.pathPrefix);
       done();
     }.bind(this));
   },
 
   writing: {
     app: function () {
-      this.template('_package.json', this.pathPrefix+'package.json');
-      this.template('_.gitignore', this.pathPrefix+'.gitignore');
-      this.template('_.npmignore', this.pathPrefix+'.npmignore');
-      this.template('_README.md', this.pathPrefix+'README.md');
-      this.dest.mkdir(this.pathPrefix+'bin');
-      this.template('bin/_index.js', this.pathPrefix+'bin/index.js');
-      this.dest.mkdir(this.pathPrefix+'src');
-      if(this.useCoffee)
-      {
-        this.src.copy('Gruntfile.coffee', this.pathPrefix+'Gruntfile.coffee')
-        this.src.copy('src/index.coffee', this.pathPrefix+'src/'+this.commandName+'.coffee');
+      this.fs.copyTpl(
+        this.templatePath('_package.json'),
+        this.destinationPath('package.json'),
+        this
+      );
+      this.fs.copyTpl(
+        this.templatePath('_.gitignore'),
+        this.destinationPath('.gitignore'),
+        this
+      );
+      this.fs.copyTpl(
+        this.templatePath('_.npmignore'),
+        this.destinationPath('.npmignore'),
+        this
+      );
+      this.fs.copyTpl(
+        this.templatePath('_README.md'),
+        this.destinationPath('README.md'),
+        this
+      );
+      this.fs.copyTpl(
+        this.templatePath('bin/_index.js'),
+        this.destinationPath('bin/index.js'),
+        this
+      );
+      if(this.useCoffee) {
+        this.fs.copy(
+          this.templatePath('src/index.coffee'),
+          this.destinationPath('src/'+this.commandName+'.coffee')
+        );
       }
-      else
-      {
-        this.src.copy('src/index.js', this.pathPrefix+'src/'+this.commandName+'.js');
+      else {
+        this.fs.copy(
+          this.templatePath('src/index.js'),
+          this.destinationPath('src/'+this.commandName+'.js')
+        );
       }
     },
 
   },
 
   end: function () {
-    var npmdir = process.cwd() + '/' + this.pathPrefix;
-    process.chdir(npmdir);
     this.installDependencies();
   }
 });
