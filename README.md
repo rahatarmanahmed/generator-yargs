@@ -1,5 +1,7 @@
 # generator-not-yargs [![Build Status](https://secure.travis-ci.org/rahatarmanahmed/generator-not-yargs.png?branch=master)](https://travis-ci.org/rahatarmanahmed/generator-not-yargs)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/rahatarmanahmed/generator-yargs.svg)](https://greenkeeper.io/)
+
 > [Yeoman](http://yeoman.io) generator
 
 
